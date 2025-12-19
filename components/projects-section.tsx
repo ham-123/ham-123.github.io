@@ -49,7 +49,7 @@ export default function ProjectsSection() {
       title: "Hôtel Les Orchidées",
       description:
         "Site web professionnel pour l'Hôtel Les Orchidées, avec présentation des chambres, système de réservation en ligne, galerie photos et informations touristiques. Design élégant et responsive.",
-      image: "/hotel-luxury-website.jpg",
+      image: "/hotel-luxury-website.png",
       tags: ["WordPress", "PHP", "JavaScript", "Booking System"],
       category: "professional",
       demo: "https://www.hotellesorchidees.com/",
@@ -58,21 +58,19 @@ export default function ProjectsSection() {
       title: "Prunnel",
       description:
         "Architecture microservices complète avec Laravel, Node.js, Vue.js, intégrant Consul pour la découverte de services, Jaeger pour le tracing distribué et PostgreSQL.",
-      image: "/microservices-architecture-dashboard.jpg",
+      image: "/microservices-architecture-dashboard.png",
       tags: ["Laravel", "Node.js", "Vue.js", "Microservices", "PostgreSQL", "Docker"],
       category: "professional",
-      github: "#",
       demo: "#",
     },
     {
-      title: "FlashCar",
+      title: "FlashCar- Parc",
       description:
         "Application de gestion de parc automobile avec Laravel et Vue.js. Interface moderne avec Tailwind CSS et API REST pour la gestion complète des véhicules.",
       image: "/car-fleet-dashboard.png",
       tags: ["Laravel", "Vue.js", "Tailwind CSS", "PostgreSQL"],
       category: "professional",
-      github: "#",
-      demo: "#",
+      demo: "https://flashcar.app/",
     },
     {
       title: "Site Cabinet d'Avocat",
@@ -81,14 +79,14 @@ export default function ProjectsSection() {
       image: "/law-firm-website-professional.png",
       tags: ["WordPress", "PHP", "JavaScript", "CSS"],
       category: "professional",
-      github: "#",
       demo: "#",
     },
     {
       title: "Site Waouh Monde",
       description:
         "Site web institutionnel développé avec Laravel et Vue.js, intégrant une API REST pour la gestion dynamique du contenu.",
-      image: "/modern-business-website.png",
+      video: "/waouh-monde.mp4", // Vidéo au lieu d'image
+      image: "/modern-business-website.png", // Image de fallback
       tags: ["Laravel", "Vue.js", "API REST"],
       category: "professional",
       github: "#",
@@ -172,12 +170,29 @@ export default function ProjectsSection() {
                   className="group overflow-hidden bg-card/50 backdrop-blur-sm border-border/50 hover:border-cyan/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-cyan/10"
                 >
                   <div className="relative h-48 overflow-hidden">
-                    <Image
-                      src={project.image || "/placeholder.svg"}
-                      alt={project.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
+                    {project.video ? (
+                      <video
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        loop
+                        muted
+                        playsInline
+                        onMouseEnter={(e) => e.currentTarget.play()}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.pause()
+                          e.currentTarget.currentTime = 0
+                        }}
+                      >
+                        <source src={project.video} type="video/mp4" />
+                        Votre navigateur ne supporte pas les vidéos.
+                      </video>
+                    ) : (
+                      <Image
+                        src={project.image || "/placeholder.svg"}
+                        alt={project.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
                       {project.github && (
                         <a href={project.github} target="_blank" rel="noopener noreferrer">
