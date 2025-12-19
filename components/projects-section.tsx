@@ -7,6 +7,15 @@ import { Input } from "@/components/ui/input"
 import { ExternalLink, Github, Lock, Eye, EyeOff } from "lucide-react"
 import Image from "next/image"
 
+// Fonction de hachage SHA-256
+const hashPassword = async (password: string): Promise<string> => {
+  const encoder = new TextEncoder()
+  const data = encoder.encode(password)
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+}
+
 export default function ProjectsSection() {
   const [filter, setFilter] = useState("all")
   const [isPersonalUnlocked, setIsPersonalUnlocked] = useState(false)
@@ -14,11 +23,12 @@ export default function ProjectsSection() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
 
-  // Mot de passe pour accéder aux projets personnels
-  const PERSONAL_PROJECTS_PASSWORD = "Hamid2025"
+  // Hash du mot de passe (le mot de passe réel n'est pas dans le code)
+  const PASSWORD_HASH = "1d47b2de25a557aee9f52c9db17160a35590788a70c3984bf3d58ca6c201ddd6"
 
-  const handleUnlock = () => {
-    if (password === PERSONAL_PROJECTS_PASSWORD) {
+  const handleUnlock = async () => {
+    const inputHash = await hashPassword(password)
+    if (inputHash === PASSWORD_HASH) {
       setIsPersonalUnlocked(true)
       setError("")
       setPassword("")
