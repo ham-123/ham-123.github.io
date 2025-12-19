@@ -3,11 +3,36 @@
 import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ExternalLink, Github, Lock } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { ExternalLink, Github, Lock, Eye, EyeOff } from "lucide-react"
 import Image from "next/image"
 
 export default function ProjectsSection() {
   const [filter, setFilter] = useState("all")
+  const [isPersonalUnlocked, setIsPersonalUnlocked] = useState(false)
+  const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
+  const [error, setError] = useState("")
+
+  // Mot de passe pour accéder aux projets personnels
+  const PERSONAL_PROJECTS_PASSWORD = "Hamid2025"
+
+  const handleUnlock = () => {
+    if (password === PERSONAL_PROJECTS_PASSWORD) {
+      setIsPersonalUnlocked(true)
+      setError("")
+      setPassword("")
+    } else {
+      setError("Mot de passe incorrect")
+      setTimeout(() => setError(""), 3000)
+    }
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleUnlock()
+    }
+  }
 
   const projects = [
     {
@@ -181,58 +206,107 @@ export default function ProjectsSection() {
           </div>
         )}
 
+        {/* Personal Projects - Protected */}
         {(filter === "all" || filter === "personal") && (
           <div>
             <h3 className="text-2xl font-bold mb-8 text-center">Projets Personnels</h3>
-            <div className="grid md:grid-cols-3 gap-6">
-              {personalProjects.map((project, index) => (
-                <Card
-                  key={index}
-                  className="group bg-card/50 backdrop-blur-sm border-border/50 hover:border-purple/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-purple/10"
-                >
-                  <div className="p-6">
-                    <div className="flex items-start justify-between mb-3">
-                      <Github className="h-8 w-8 text-cyan" />
-                      {project.visibility === "Private" ? (
-                        <span className="flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-muted border border-border">
-                          <Lock className="h-3 w-3" />
-                          Private
-                        </span>
-                      ) : (
-                        <span className="text-xs px-2 py-1 rounded-full bg-neon/20 border border-neon/50 text-neon">
-                          Public
-                        </span>
-                      )}
-                    </div>
-                    <h4 className="text-xl font-bold mb-2 group-hover:text-purple transition-colors">
-                      {project.title}
-                    </h4>
-                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.tags.map((tag, tagIndex) => (
-                        <span
-                          key={tagIndex}
-                          className="px-2 py-1 text-xs font-medium rounded-full bg-gradient-to-r from-purple/20 to-pink-500/20 border border-purple/30"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span>Mis à jour {project.lastUpdate}</span>
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-cyan hover:underline"
-                      >
-                        Voir sur GitHub
-                      </a>
+
+            {!isPersonalUnlocked ? (
+              <Card className="max-w-md mx-auto bg-card/50 backdrop-blur-sm border-border/50">
+                <div className="p-8 text-center">
+                  <div className="mb-6 flex justify-center">
+                    <div className="p-4 rounded-full bg-gradient-to-r from-purple/20 to-pink-500/20 border border-purple/30">
+                      <Lock className="h-8 w-8 text-purple" />
                     </div>
                   </div>
-                </Card>
-              ))}
-            </div>
+                  <h4 className="text-xl font-bold mb-2">Section Protégée</h4>
+                  <p className="text-muted-foreground mb-6">
+                    Cette section contient mes projets personnels. Veuillez entrer le mot de passe pour y accéder.
+                  </p>
+
+                  <div className="space-y-4">
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Entrer le mot de passe"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        className="pr-10 border-purple/30 focus:border-purple"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </button>
+                    </div>
+
+                    {error && (
+                      <p className="text-sm text-red-500 animate-pulse">{error}</p>
+                    )}
+
+                    <Button
+                      onClick={handleUnlock}
+                      className="w-full bg-gradient-to-r from-purple to-pink-500 hover:opacity-90"
+                    >
+                      Déverrouiller
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            ) : (
+              <div className="grid md:grid-cols-3 gap-6">
+                {personalProjects.map((project, index) => (
+                  <Card
+                    key={index}
+                    className="group bg-card/50 backdrop-blur-sm border-border/50 hover:border-purple/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-purple/10"
+                  >
+                    <div className="p-6">
+                      <div className="flex items-start justify-between mb-3">
+                        <Github className="h-8 w-8 text-cyan" />
+                        {project.visibility === "Private" ? (
+                          <span className="flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-muted border border-border">
+                            <Lock className="h-3 w-3" />
+                            Private
+                          </span>
+                        ) : (
+                          <span className="text-xs px-2 py-1 rounded-full bg-neon/20 border border-neon/50 text-neon">
+                            Public
+                          </span>
+                        )}
+                      </div>
+                      <h4 className="text-xl font-bold mb-2 group-hover:text-purple transition-colors">
+                        {project.title}
+                      </h4>
+                      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{project.description}</p>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {project.tags.map((tag, tagIndex) => (
+                          <span
+                            key={tagIndex}
+                            className="px-2 py-1 text-xs font-medium rounded-full bg-gradient-to-r from-purple/20 to-pink-500/20 border border-purple/30"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <span>Mis à jour {project.lastUpdate}</span>
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-cyan hover:underline"
+                        >
+                          Voir sur GitHub
+                        </a>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
