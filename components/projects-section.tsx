@@ -89,8 +89,7 @@ export default function ProjectsSection() {
       image: "/modern-business-website.png", // Image de fallback
       tags: ["Laravel", "Vue.js", "API REST"],
       category: "professional",
-      github: "#",
-      demo: "#",
+      demo: "https://waouhmonde.com/",
     },
   ]
 

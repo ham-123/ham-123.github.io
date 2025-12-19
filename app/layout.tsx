@@ -14,11 +14,18 @@ export const metadata: Metadata = {
     "Portfolio de TCHEMOKO A. HAMID, développeur Full-Stack spécialisé en Laravel, Vue.js et architecture microservices. En recherche de stage en alternance.",
   keywords: ["Développeur Full-Stack", "Laravel", "Vue.js", "Microservices", "Docker", "Portfolio"],
   authors: [{ name: "TCHEMOKO A. HAMID" }],
-  generator: "v0.app",
   icons: {
     icon: [
       {
-        url: "/ico.ico",
+        url: "/icon-light-32x32.png",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        url: "/icon-dark-32x32.png",
+        media: "(prefers-color-scheme: dark)",
+      },
+      {
+        url: "/icon.svg",
         type: "image/svg+xml",
       },
     ],
