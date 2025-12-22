@@ -2,10 +2,20 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { generateGoogleMeetLink, formatMeetingDateTime, generateGoogleCalendarLink } from '@/lib/google-meet'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function POST(request: NextRequest) {
   try {
+    // Instancier Resend uniquement lors de l'exécution de la requête
+    const apiKey = process.env.RESEND_API_KEY
+    if (!apiKey) {
+      console.error('❌ RESEND_API_KEY manquante')
+      return NextResponse.json(
+        { success: false, error: 'Configuration email manquante' },
+        { status: 500 }
+      )
+    }
+
+    const resend = new Resend(apiKey)
+
     const body = await request.json()
     const { type, data } = body
 
