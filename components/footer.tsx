@@ -47,7 +47,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <h3 className="text-2xl font-bold bg-gradient-to-r from-cyan to-purple bg-clip-text text-transparent mb-4">
-              HAMID TCHEMOKO
+              HAMID TCHEMOKO A.
             </h3>
             <p className="text-muted-foreground text-sm leading-relaxed">
               {language === "fr"
@@ -98,9 +98,7 @@ export default function Footer() {
           <p>
             © {currentYear} TCHEMOKO A. HAMID. {t("footer.rights")}
           </p>
-          <p className="mt-2">
-            {t("footer.madeWith")} ❤️ {t("footer.by")} HAMID
-          </p>
+
         </div>
       </div>
     </footer>

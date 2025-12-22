@@ -4,10 +4,10 @@ import { GraduationCap, Calendar, MapPin } from "lucide-react"
 export default function EducationSection() {
   const education = [
     {
-      degree: "MBA 1 Développeur Full-Stack",
+      degree: "MBA  Développeur Full-Stack",
       institution: "MyDigitalSchool",
       location: "Montpellier, France",
-      period: "2025-2026",
+      period: "2025-2027",
       status: "En cours",
     },
     {
