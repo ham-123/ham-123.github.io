@@ -163,6 +163,26 @@ const translations = {
       subtitle: "Découvrez mes réalisations",
       viewProject: "Voir le projet",
       viewCode: "Voir le code",
+      filters: {
+        all: "Tous",
+        professional: "Professionnels",
+        personal: "Personnels",
+      },
+      professionalTitle: "Projets Professionnels",
+      personalTitle: "Projets Personnels",
+      protected: {
+        title: "Projets Personnels Protégés",
+        description: "Ces projets contiennent du code propriétaire. Entrez le mot de passe pour y accéder.",
+        placeholder: "Mot de passe",
+        unlock: "Déverrouiller",
+        wrongPassword: "Mot de passe incorrect",
+      },
+      visibility: {
+        private: "Privé",
+        public: "Public",
+      },
+      updatedAgo: "Mis à jour",
+      viewOnGithub: "Voir sur GitHub",
     },
     blog: {
       title: "Blog & Articles",
@@ -289,6 +309,26 @@ const translations = {
       subtitle: "Discover my work",
       viewProject: "View Project",
       viewCode: "View Code",
+      filters: {
+        all: "All",
+        professional: "Professional",
+        personal: "Personal",
+      },
+      professionalTitle: "Professional Projects",
+      personalTitle: "Personal Projects",
+      protected: {
+        title: "Protected Section",
+        description: "This section contains my personal projects. Please enter the password to access.",
+        placeholder: "Enter password",
+        unlock: "Unlock",
+        wrongPassword: "Incorrect password",
+      },
+      visibility: {
+        private: "Private",
+        public: "Public",
+      },
+      updatedAgo: "Updated",
+      viewOnGithub: "View on GitHub",
     },
     blog: {
       title: "Blog & Articles",

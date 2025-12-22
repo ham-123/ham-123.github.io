@@ -5,7 +5,9 @@ import { generateGoogleMeetLink, formatMeetingDateTime, generateGoogleCalendarLi
 export async function POST(request: NextRequest) {
   try {
     // Instancier Resend uniquement lors de l'exécution de la requête
-    const apiKey = process.env.RESEND_API_KEY
+    // Utiliser la variable d'environnement ou la clé en dur comme fallback
+    const apiKey = process.env.RESEND_API_KEY || 're_BQsshoab_27bEkkZGMuQSJj69zsYX58Db'
+
     if (!apiKey) {
       console.error('❌ RESEND_API_KEY manquante')
       return NextResponse.json(

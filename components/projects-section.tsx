@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ExternalLink, Github, Lock, Eye, EyeOff } from "lucide-react"
 import Image from "next/image"
+import { useLanguage } from "@/hooks/use-language"
 
 // Fonction de hachage SHA-256
 const hashPassword = async (password: string): Promise<string> => {
@@ -17,6 +18,7 @@ const hashPassword = async (password: string): Promise<string> => {
 }
 
 export default function ProjectsSection() {
+  const { t } = useLanguage()
   const [filter, setFilter] = useState("all")
   const [isPersonalUnlocked, setIsPersonalUnlocked] = useState(false)
   const [password, setPassword] = useState("")
@@ -33,7 +35,7 @@ export default function ProjectsSection() {
       setError("")
       setPassword("")
     } else {
-      setError("Mot de passe incorrect")
+      setError(t("projects.protected.wrongPassword"))
       setTimeout(() => setError(""), 3000)
     }
   }
@@ -53,6 +55,7 @@ export default function ProjectsSection() {
       tags: ["WordPress", "PHP", "JavaScript", "Booking System"],
       category: "professional",
       demo: "https://www.hotellesorchidees.com/",
+      github: undefined,
     },
     {
       title: "Prunnel",
@@ -62,6 +65,7 @@ export default function ProjectsSection() {
       tags: ["Laravel", "Node.js", "Vue.js", "Microservices", "PostgreSQL", "Docker"],
       category: "professional",
       demo: "#",
+      github: undefined,
     },
     {
       title: "FlashCar- Parc",
@@ -71,6 +75,7 @@ export default function ProjectsSection() {
       tags: ["Laravel", "Vue.js", "Tailwind CSS", "PostgreSQL"],
       category: "professional",
       demo: "https://flashcar.app/",
+      github: undefined,
     },
     {
       title: "Site Cabinet d'Avocat",
@@ -80,6 +85,7 @@ export default function ProjectsSection() {
       tags: ["WordPress", "PHP", "JavaScript", "CSS"],
       category: "professional",
       demo: "#",
+      github: undefined,
     },
     {
       title: "Site Waouh Monde",
@@ -90,6 +96,7 @@ export default function ProjectsSection() {
       tags: ["Laravel", "Vue.js", "API REST"],
       category: "professional",
       demo: "https://waouhmonde.com/",
+      github: undefined,
     },
   ]
 
@@ -133,9 +140,9 @@ export default function ProjectsSection() {
   ]
 
   const filters = [
-    { id: "all", label: "Tous" },
-    { id: "professional", label: "Professionnels" },
-    { id: "personal", label: "Personnels" },
+    { id: "all", label: t("projects.filters.all") },
+    { id: "professional", label: t("projects.filters.professional") },
+    { id: "personal", label: t("projects.filters.personal") },
   ]
 
   const filteredProjects = filter === "all" ? projects : projects.filter((project) => project.category === filter)
@@ -145,7 +152,9 @@ export default function ProjectsSection() {
       <div className="container mx-auto max-w-6xl relative z-10">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-cyan to-purple bg-clip-text text-transparent">Mes Projets</span>
+            <span className="bg-gradient-to-r from-cyan to-purple bg-clip-text text-transparent">
+              {t("projects.title")}
+            </span>
           </h2>
           <div className="h-1 w-24 bg-gradient-to-r from-cyan to-purple mx-auto rounded-full" />
         </div>
@@ -170,7 +179,7 @@ export default function ProjectsSection() {
         {/* Professional Projects */}
         {(filter === "all" || filter === "professional") && (
           <div className="mb-16">
-            <h3 className="text-2xl font-bold mb-8 text-center">Projets Professionnels</h3>
+            <h3 className="text-2xl font-bold mb-8 text-center">{t("projects.professionalTitle")}</h3>
             <div className="grid md:grid-cols-2 gap-8">
               {filteredProjects.map((project, index) => (
                 <Card
@@ -242,7 +251,7 @@ export default function ProjectsSection() {
         {/* Personal Projects - Protected */}
         {(filter === "all" || filter === "personal") && (
           <div>
-            <h3 className="text-2xl font-bold mb-8 text-center">Projets Personnels</h3>
+            <h3 className="text-2xl font-bold mb-8 text-center">{t("projects.personalTitle")}</h3>
 
             {!isPersonalUnlocked ? (
               <Card className="max-w-md mx-auto bg-card/50 backdrop-blur-sm border-border/50">
@@ -252,16 +261,16 @@ export default function ProjectsSection() {
                       <Lock className="h-8 w-8 text-purple" />
                     </div>
                   </div>
-                  <h4 className="text-xl font-bold mb-2">Section Protégée</h4>
+                  <h4 className="text-xl font-bold mb-2">{t("projects.protected.title")}</h4>
                   <p className="text-muted-foreground mb-6">
-                    Cette section contient mes projets personnels. Veuillez entrer le mot de passe pour y accéder.
+                    {t("projects.protected.description")}
                   </p>
 
                   <div className="space-y-4">
                     <div className="relative">
                       <Input
                         type={showPassword ? "text" : "password"}
-                        placeholder="Entrer le mot de passe"
+                        placeholder={t("projects.protected.placeholder")}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         onKeyPress={handleKeyPress}
@@ -284,7 +293,7 @@ export default function ProjectsSection() {
                       onClick={handleUnlock}
                       className="w-full bg-gradient-to-r from-purple to-pink-500 hover:opacity-90"
                     >
-                      Déverrouiller
+                      {t("projects.protected.unlock")}
                     </Button>
                   </div>
                 </div>
@@ -302,11 +311,11 @@ export default function ProjectsSection() {
                         {project.visibility === "Private" ? (
                           <span className="flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-muted border border-border">
                             <Lock className="h-3 w-3" />
-                            Private
+                            {t("projects.visibility.private")}
                           </span>
                         ) : (
                           <span className="text-xs px-2 py-1 rounded-full bg-neon/20 border border-neon/50 text-neon">
-                            Public
+                            {t("projects.visibility.public")}
                           </span>
                         )}
                       </div>
@@ -325,14 +334,14 @@ export default function ProjectsSection() {
                         ))}
                       </div>
                       <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>Mis à jour {project.lastUpdate}</span>
+                        <span>{t("projects.updatedAgo")} {project.lastUpdate}</span>
                         <a
                           href={project.github}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-cyan hover:underline"
                         >
-                          Voir sur GitHub
+                          {t("projects.viewOnGithub")}
                         </a>
                       </div>
                     </div>
