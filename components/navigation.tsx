@@ -4,12 +4,15 @@ import { useState, useEffect } from "react"
 import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { LanguageToggle } from "@/components/language-toggle"
 import { useTheme } from "@/hooks/use-theme"
+import { useLanguage } from "@/hooks/use-language"
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { theme } = useTheme()
+  const { t } = useLanguage()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,13 +32,13 @@ export default function Navigation() {
   }
 
   const navItems = [
-    { id: "about", label: "À propos" },
-    { id: "skills", label: "Compétences" },
-    { id: "experience", label: "Expériences" },
-    { id: "education", label: "Formation" },
-    { id: "projects", label: "Projets" },
-    { id: "blog", label: "Blog" },
-    { id: "contact", label: "Contact" },
+    { id: "about", label: t("nav.about") },
+    { id: "skills", label: t("nav.skills") },
+    { id: "experience", label: t("nav.experience") },
+    { id: "education", label: t("nav.education") },
+    { id: "projects", label: t("nav.projects") },
+    { id: "blog", label: t("nav.blog") },
+    { id: "contact", label: t("nav.contact") },
   ]
 
   return (
@@ -69,11 +72,13 @@ export default function Navigation() {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan to-purple transition-all group-hover:w-full" />
               </button>
             ))}
+            <LanguageToggle />
             <ThemeToggle />
           </div>
 
           {/* Mobile Menu Button & Theme Toggle */}
           <div className="md:hidden flex items-center gap-2">
+            <LanguageToggle />
             <ThemeToggle />
             <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
               {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}

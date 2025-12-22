@@ -1,9 +1,11 @@
 "use client"
 
 import { Linkedin, Github, Mail } from "lucide-react"
+import { useLanguage } from "@/hooks/use-language"
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
+  const { t, language } = useLanguage()
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
@@ -13,11 +15,11 @@ export default function Footer() {
   }
 
   const navLinks = [
-    { id: "about", label: "À propos" },
-    { id: "skills", label: "Compétences" },
-    { id: "experience", label: "Expériences" },
-    { id: "projects", label: "Projets" },
-    { id: "contact", label: "Contact" },
+    { id: "about", label: t("nav.about") },
+    { id: "skills", label: t("nav.skills") },
+    { id: "experience", label: t("nav.experience") },
+    { id: "projects", label: t("nav.projects") },
+    { id: "contact", label: t("nav.contact") },
   ]
 
   const socialLinks = [
@@ -48,7 +50,9 @@ export default function Footer() {
               HAMID TCHEMOKO
             </h3>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Développeur Full-Stack passionné, spécialisé en Laravel, Vue.js et architecture microservices.
+              {language === "fr"
+                ? "Développeur Full-Stack passionné, spécialisé en Laravel, Vue.js et architecture microservices."
+                : "Passionate Full-Stack Developer, specialized in Laravel, Vue.js and microservices architecture."}
             </p>
           </div>
 
@@ -70,7 +74,9 @@ export default function Footer() {
 
           {/* Social Links */}
           <div>
-            <h4 className="font-bold mb-4">Réseaux Sociaux</h4>
+            <h4 className="font-bold mb-4">
+              {language === "fr" ? "Réseaux Sociaux" : "Social Networks"}
+            </h4>
             <div className="flex gap-3">
               {socialLinks.map((social, index) => (
                 <a
@@ -79,23 +85,22 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="p-3 rounded-lg bg-gradient-to-br from-cyan/20 to-purple/20 border border-cyan/30 hover:scale-110 hover:border-purple/50 transition-all group"
+                  className="p-3 rounded-full bg-gradient-to-r from-cyan/20 to-purple/20 border border-cyan/30 hover:scale-110 hover:border-cyan/50 transition-all"
                 >
-                  <social.icon className="h-5 w-5 text-foreground group-hover:text-cyan transition-colors" />
+                  <social.icon className="h-5 w-5" />
                 </a>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-border/50">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-            <p>© {currentYear} TCHEMOKO A. HAMID. Tous droits réservés.</p>
-            <p>
-              Fait avec <span className="text-red-500">♥</span> en France
-            </p>
-          </div>
+        <div className="pt-8 border-t border-border/50 text-center text-sm text-muted-foreground">
+          <p>
+            © {currentYear} TCHEMOKO A. HAMID. {t("footer.rights")}
+          </p>
+          <p className="mt-2">
+            {t("footer.madeWith")} ❤️ {t("footer.by")} HAMID
+          </p>
         </div>
       </div>
     </footer>

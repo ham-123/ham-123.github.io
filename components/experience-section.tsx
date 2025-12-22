@@ -1,55 +1,13 @@
 import { Card } from "@/components/ui/card"
 import { Briefcase, MapPin, Calendar } from "lucide-react"
+import { useLanguage } from "@/hooks/use-language"
 
 export default function ExperienceSection() {
-  const experiences = [
-    {
-      title: "Développeur Web Full-Stack",
-      company: "WAOUH MONDE",
-      location: "Remote",
-      period: "Sept 2024 - Sept 2025",
-      projects: [
-        {
-          name: "Site WordPress cabinet d'avocat",
-          description: "Conception et développement complet",
-        },
-        {
-          name: "Prunnel (Architecture Microservices)",
-          description: "Laravel + Node.js + Vue.js + API REST + Consul + Jaeger + Swagger + PostgreSQL",
-        },
-        {
-          name: "FlashCar (Gestion parc automobile)",
-          description: "Laravel + Vue.js + Tailwind CSS + API REST + PostgreSQL",
-        },
-        {
-          name: "Site Waouh Monde",
-          description: "Laravel + Vue.js + API REST",
-        },
-      ],
-      tags: ["Laravel", "Vue.js", "Node.js", "PostgreSQL", "Docker", "Microservices"],
-    },
-    {
-      title: "Analyste Programmeur (Stage)",
-      company: "CABRO GROUP",
-      location: "Cotonou, Bénin",
-      period: "Mars - Mai 2023",
-      projects: [
-        {
-          name: "Analyse des besoins clients",
-          description: "Recueil et analyse approfondie des besoins",
-        },
-        {
-          name: "Développement de solutions sur mesure",
-          description: "Applications web adaptées aux besoins spécifiques",
-        },
-        {
-          name: "Rédaction de cahiers des charges",
-          description: "Documentation technique complète",
-        },
-      ],
-      tags: ["Analyse", "PHP", "MySQL", "Cahier des charges"],
-    },
-  ]
+  const { t } = useLanguage()
+
+  // Récupérer les expériences depuis le système de traduction
+  const rawItems = t("experience.items")
+  const experiences = Array.isArray(rawItems) ? rawItems : []
 
   return (
     <section id="experience" className="relative py-20 px-4">
@@ -57,7 +15,7 @@ export default function ExperienceSection() {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             <span className="bg-gradient-to-r from-cyan to-purple bg-clip-text text-transparent">
-              Expériences Professionnelles
+              {t("experience.title")}
             </span>
           </h2>
           <div className="h-1 w-24 bg-gradient-to-r from-cyan to-purple mx-auto rounded-full" />
@@ -68,7 +26,7 @@ export default function ExperienceSection() {
           <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-cyan via-purple to-neon" />
 
           <div className="space-y-12">
-            {experiences.map((exp, index) => (
+            {experiences.map((exp: any, index: number) => (
               <div
                 key={index}
                 className={`relative flex items-center ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}
@@ -102,7 +60,7 @@ export default function ExperienceSection() {
                     </div>
 
                     <div className="space-y-3 mb-4">
-                      {exp.projects.map((project, projIndex) => (
+                      {Array.isArray(exp.projects) && exp.projects.map((project: any, projIndex: number) => (
                         <div key={projIndex} className="pl-4 border-l-2 border-cyan/30">
                           <h4 className="font-semibold text-foreground mb-1">{project.name}</h4>
                           <p className="text-sm text-muted-foreground">{project.description}</p>
@@ -111,7 +69,7 @@ export default function ExperienceSection() {
                     </div>
 
                     <div className="flex flex-wrap gap-2">
-                      {exp.tags.map((tag, tagIndex) => (
+                      {Array.isArray(exp.tags) && exp.tags.map((tag: any, tagIndex: number) => (
                         <span
                           key={tagIndex}
                           className="px-3 py-1 text-xs font-medium rounded-full bg-gradient-to-r from-cyan/20 to-purple/20 border border-cyan/30"

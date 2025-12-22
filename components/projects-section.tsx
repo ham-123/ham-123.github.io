@@ -104,10 +104,19 @@ export default function ProjectsSection() {
       github: "https://github.com/ham-123/goyave-api",
     },
     {
+      title: "Forex Trading Bot",
+      description:
+        "Bot de trading automatisé pour le marché Forex avec analyse technique multi-indicateurs (RSI, MACD, MA, Bollinger, ADX). Intègre des notifications Telegram en temps réel, gestion du risque et Expert Advisor MT5 pour le trading automatique avec historique de données de 3+ ans.",
+      tags: ["Python", "Forex", "MT5", "MQL5", "Telegram API", "SQLite", "Trading"],
+      visibility: "Public",
+      lastUpdate: "Il y a 2 mois",
+      github: "https://github.com/ham-123/forex_trading_bot",
+    },
+    {
       title: "Trading V10 HMD STG",
       description:
-        "Bot de trading automatisé développé en Python pour l'analyse technique et l'exécution d'ordres sur les marchés financiers avec stratégies avancées.",
-      tags: ["Python", "Trading", "Automation", "Finance"],
+        "Bot de trading automatisé développé en Python utilisant des packages d'analyse technique avancés (pandas, numpy, TA-Lib). Intègre un modèle de Machine Learning entraîné sur des données historiques de trading et des comportements passés du marché pour optimiser les stratégies d'exécution d'ordres.",
+      tags: ["Python", "Trading", "Machine Learning", "pandas", "TA-Lib", "AI"],
       visibility: "Public",
       lastUpdate: "Il y a 1 mois",
       github: "https://github.com/ham-123/trading_v10_hmd_stg",
@@ -115,8 +124,8 @@ export default function ProjectsSection() {
     {
       title: "Trading V75 Bot",
       description:
-        "Bot de trading spécialisé pour l'indice de volatilité V75 avec algorithmes d'analyse de patterns et gestion automatique des risques.",
-      tags: ["Python", "Trading Bot", "V75", "Algorithm"],
+        "Bot de trading spécialisé pour l'indice de volatilité V75 utilisant des bibliothèques d'analyse (scikit-learn, pandas). Implémente un modèle prédictif entraîné avec des données historiques de patterns et comportements du marché pour la gestion automatique des risques et la détection d'opportunités.",
+      tags: ["Python", "Trading Bot", "V75", "ML", "scikit-learn", "Algorithm"],
       visibility: "Public",
       lastUpdate: "Il y a 1 mois",
       github: "https://github.com/ham-123/Trading_v75_bot",

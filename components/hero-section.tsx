@@ -4,37 +4,35 @@ import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Download, Calendar, ChevronDown } from "lucide-react"
 import { useTheme } from "@/hooks/use-theme"
+import { useLanguage } from "@/hooks/use-language"
 
 export default function HeroSection() {
-  const [displayText, setDisplayText] = useState("")
   const [isLoaded, setIsLoaded] = useState(false)
   const [currentTitleIndex, setCurrentTitleIndex] = useState(0)
   const { theme } = useTheme()
-  const titles = ["Ingénieur Logiciel", "Développeur Full Stack", "Architecte Logiciel"]
+  const { t, language } = useLanguage()
+
+  // Assurer que `titles` est toujours un tableau de chaînes
+  const rawTitles = t("hero.roles")
+  const titles = Array.isArray(rawTitles)
+    ? (rawTitles as string[])
+    : typeof rawTitles === "string"
+    ? [rawTitles]
+    : []
 
   useEffect(() => {
     setTimeout(() => setIsLoaded(true), 100)
   }, [])
 
   useEffect(() => {
-    const fullText = titles[currentTitleIndex]
-    let index = 0
-    setDisplayText("")
+    // Changer de titre toutes les 3 secondes
+    if (titles.length === 0) return
+    const interval = setInterval(() => {
+      setCurrentTitleIndex((prev) => (prev + 1) % titles.length)
+    }, 3000)
 
-    const typingInterval = setInterval(() => {
-      if (index <= fullText.length) {
-        setDisplayText(fullText.slice(0, index))
-        index++
-      } else {
-        clearInterval(typingInterval)
-        setTimeout(() => {
-          setCurrentTitleIndex((prev) => (prev + 1) % titles.length)
-        }, 2000)
-      }
-    }, 80)
-
-    return () => clearInterval(typingInterval)
-  }, [currentTitleIndex])
+    return () => clearInterval(interval)
+  }, [titles.length])
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
@@ -43,14 +41,42 @@ export default function HeroSection() {
     }
   }
 
+  // Fonction pour déclencher le téléchargement du CV placé dans `public/Fichier`
+  const downloadCV = async () => {
+    const publicPath = '/Fichier/TCHEMOKO A Hamid CV.pdf'
+    const encodedPath = encodeURI(publicPath)
+
+    try {
+      const res = await fetch(encodedPath)
+      if (!res.ok) {
+        // Fallback: ouvrir le fichier directement si fetch échoue
+        window.open(encodedPath, '_blank', 'noopener')
+        return
+      }
+
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'TCHEMOKO A Hamid CV.pdf'
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      URL.revokeObjectURL(url)
+    } catch (e) {
+      // En cas d'erreur (ex: bloqueur), ouvrir le PDF dans un nouvel onglet
+      window.open(encodedPath, '_blank', 'noopener')
+    }
+  }
+
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center px-4 pt-20 overflow-hidden">
       <div className="absolute inset-0 z-0 flex items-center justify-center">
         <div className="relative w-full h-full flex items-end justify-center pb-0">
           <img
-            src={theme === "dark" ? "/profile-hoodie-black-bg.png" : "/profile-white-tshirt.jpg"}
+            src={theme === "dark" ? "/profile-hoodie-black-bg.png" : "/profile-white-tshirt.png"}
             alt="Background"
-            className="w-full h-full object-cover object-[center_10%] opacity-60 scale-80"
+            className="w-full h-full object-cover object-[center_10%] opacity-60"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/10 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/10 to-background" />
@@ -61,27 +87,27 @@ export default function HeroSection() {
         <h1
           className={`text-5xl md:text-7xl lg:text-8xl font-bold mb-6 transition-all duration-1000 delay-200 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
         >
-          <span className="bg-gradient-to-r from-cyan via-purple to-neon bg-clip-text text-transparent drop-shadow-2xl">
-            TCHEMOKO A. HAMID
+          <span className="bg-gradient-to-r from-cyan via-purple to-neon bg-clip-text text-transparent drop-shadow-2xl inline-block animate-zoom-name">
+            {t("hero.title")}
           </span>
         </h1>
 
-        {/* Typing Effect Subtitle */}
+        {/* Animated Subtitle - Affiche le titre complet qui tourne */}
         <div
-          className={`h-12 md:h-16 mb-8 transition-all duration-1000 delay-400 ${isLoaded ? "opacity-100" : "opacity-0"}`}
+          className={`min-h-[3rem] md:min-h-[4rem] mb-8 transition-all duration-1000 delay-400 ${isLoaded ? "opacity-100" : "opacity-0"}`}
         >
-          <p className="text-2xl md:text-3xl lg:text-4xl text-muted-foreground font-mono">
-            {displayText}
-            <span className="animate-pulse">|</span>
+          <p
+            key={currentTitleIndex}
+            className="text-xl md:text-2xl lg:text-3xl text-muted-foreground font-semibold px-4 animate-fade-in"
+          >
+            {titles.length > 0 ? titles[currentTitleIndex] : ""}
           </p>
         </div>
 
         <p
           className={`text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed transition-all duration-1000 delay-600 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
         >
-          Développeur Full-Stack passionné par l'architecture microservices et le clean code, je recherche un stage en
-          alternance pour contribuer à des projets innovants. Avec une expertise en Laravel, Vue.js et Docker, je crée
-          des solutions web modernes et performantes.
+          {t("hero.description")}
         </p>
 
         {/* Call-to-Action Badge */}
@@ -89,7 +115,9 @@ export default function HeroSection() {
           className={`mb-10 inline-block px-6 py-3 rounded-full bg-gradient-to-r from-cyan/20 to-purple/20 border border-cyan/30 transition-all duration-1000 delay-700 hover:scale-105 ${isLoaded ? "opacity-100" : "opacity-0"}`}
         >
           <p className="text-base md:text-lg font-semibold text-foreground">
-            🎯 En recherche de stage alternance - Disponible dès maintenant
+            {language === "fr"
+              ? "🎯 En recherche de stage alternance - Disponible dès maintenant"
+              : "🎯 Looking for apprenticeship - Available now"}
           </p>
         </div>
 
@@ -103,7 +131,7 @@ export default function HeroSection() {
             onClick={() => scrollToSection("projects")}
           >
             <span className="relative z-10 flex items-center gap-2">
-              Voir mes projets
+              {language === "fr" ? "Voir mes projets" : "View my projects"}
               <ChevronDown className="h-4 w-4 group-hover:translate-y-1 transition-transform" />
             </span>
           </Button>
@@ -115,16 +143,17 @@ export default function HeroSection() {
             onClick={() => scrollToSection("contact")}
           >
             <Calendar className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
-            Prendre rendez-vous
+            {t("hero.bookCall")}
           </Button>
 
           <Button
             size="lg"
             variant="outline"
             className="group border-purple/50 hover:bg-purple/10 hover:border-purple min-w-[200px] bg-transparent"
+            onClick={downloadCV}
           >
             <Download className="mr-2 h-4 w-4 group-hover:translate-y-1 transition-transform" />
-            Télécharger CV
+            {t("hero.downloadCV")}
           </Button>
         </div>
 
